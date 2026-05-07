@@ -30,6 +30,10 @@ def main() -> None:
 
         full_prompt = "\n".join(prompt_history)
         llm_output = llm.generate(full_prompt, system_prompt=AGENT_SYSTEM_PROMPT)
+        if llm_output.startswith("LLM_ERROR:"):
+            print(f"模型调用失败: {llm_output}")
+            print("本轮任务提前结束。请稍后重试，或更换可用模型。")
+            break
 
         match = re.search(
             r"(Thought:.*?Action:.*?)(?=\n\s*(?:Thought:|Action:|Observation:)|\Z)",
